@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "x-api-key", "Authorization"])
 
 # Configuration
 API_KEY = os.getenv('API_KEY', 'your-secret-api-key')
