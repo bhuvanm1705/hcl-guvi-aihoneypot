@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "x-api-key", "Authorization"])
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers="*")
 
 # Configuration
 API_KEY = os.getenv('API_KEY', 'your-secret-api-key')
@@ -445,7 +445,11 @@ def honeypot_endpoint():
         # Process the message
         response = honeypot.process_message(session_id, message, conversation_history, metadata)
         
-        return jsonify(response)
+        return jsonify({
+            "status": "success",
+            "reply": ai_response,
+            "debug_headers": dict(request.headers)
+        })
     
     except Exception as e:
         logger.error(f"Error processing request: {e}")
@@ -454,7 +458,8 @@ def honeypot_endpoint():
         error_details = traceback.format_exc()
         return jsonify({
             "status": "success",
-            "reply": f"DEBUG_ERROR: {str(e)}"
+            "reply": f"DEBUG_ERROR: {str(e)}",
+            "debug_headers": dict(request.headers)
         }), 200
 
 @app.route('/health', methods=['GET'])
