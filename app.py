@@ -26,7 +26,10 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Configuration
 API_KEY = os.getenv('API_KEY', 'your-secret-api-key')
