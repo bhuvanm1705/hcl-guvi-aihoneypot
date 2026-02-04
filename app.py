@@ -400,7 +400,6 @@ def honeypot_endpoint():
         return jsonify({"error": "Unauthorized"}), 401
     
     try:
-    try:
         # Parse request data with silent=True to avoid 400 if content-type is wrong
         data = request.get_json(silent=True, force=True)
         
